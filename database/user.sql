@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 30, 2026 at 08:35 AM
+-- Generation Time: Feb 22, 2026 at 03:55 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,35 @@ SET time_zone = "+00:00";
 --
 -- Database: `user`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bookings`
+--
+
+CREATE TABLE `bookings` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL,
+  `seat_number` varchar(10) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `status` varchar(50) DEFAULT 'pending',
+  `payment_method` varchar(20) DEFAULT NULL,
+  `transaction_id` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bookings`
+--
+
+INSERT INTO `bookings` (`id`, `user_id`, `event_id`, `seat_number`, `price`, `status`, `payment_method`, `transaction_id`, `created_at`) VALUES
+(21, 4, 15, 'A2', 5000.00, 'pending', 'card', NULL, '2026-02-22 03:47:35'),
+(22, 4, 17, 'B1', 5000.00, 'pending', 'card', NULL, '2026-02-22 03:47:43'),
+(23, 4, 17, 'A1', 5000.00, 'pending', 'card', NULL, '2026-02-22 03:55:08'),
+(24, 4, 15, 'A1', 5000.00, 'pending', 'card', NULL, '2026-02-22 03:55:14'),
+(25, 4, 18, 'A1', 5000.00, 'confirmed', 'card', NULL, '2026-02-22 03:55:25');
 
 -- --------------------------------------------------------
 
@@ -68,20 +97,30 @@ CREATE TABLE `user` (
   `lname` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `role` varchar(100) NOT NULL
+  `role` varchar(100) NOT NULL,
+  `points` int(11) DEFAULT 0,
+  `status` varchar(20) DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `lname`, `email`, `password`, `role`) VALUES
-(1, 'jeremy', 'rabanes', 'rabanesjeremy@gmail.com', '$2y$10$r.DOQmeMY36viOLWMSquM.HHJXCOeqmIN21tHU4sxjACe0BnjllL6', 'admin'),
-(3, 'Kimberly', 'Herbias', 'kimberly@gmail.com', '$2y$10$r.DOQmeMY36viOLWMSquM.HHJXCOeqmIN21tHU4sxjACe0BnjllL6', 'user');
+INSERT INTO `user` (`id`, `name`, `lname`, `email`, `password`, `role`, `points`, `status`) VALUES
+(1, 'jeremy', 'rabanes', 'rabanesjeremy@gmail.com', '$2y$10$r.DOQmeMY36viOLWMSquM.HHJXCOeqmIN21tHU4sxjACe0BnjllL6', 'admin', 0, 'active'),
+(4, 'Kimberly', 'Herbias', 'kimberly@gmail.com', '$2y$10$r.DOQmeMY36viOLWMSquM.HHJXCOeqmIN21tHU4sxjACe0BnjllL6', 'user', 2600, 'active'),
+(6, 'Jhon Darell', 'Pateno', 'darell@gmail.com', '$2y$10$PMLyY8EdRXx1WQovdzeBIOq9hZ4neKyCcui2ABIJ7XKNuUcNij.1u', 'user', 2500, 'pending');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `bookings`
+--
+ALTER TABLE `bookings`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `transaction_id` (`transaction_id`);
 
 --
 -- Indexes for table `events`
@@ -100,6 +139,12 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `bookings`
+--
+ALTER TABLE `bookings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
@@ -109,7 +154,7 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
